@@ -1,21 +1,20 @@
 package tn.keyrus.pfe.imdznd.transactionservice.cleanworld.currency.model
 
 import io.vavr.control.Either
-import org.apache.logging.log4j.util.Strings
 import java.util.*
 
 class Currency private constructor(
     val currencyName: String,
     val codeISO: Int,
     val exponent: Int,
-    val isCrypto: Boolean,
+    val crypto: Boolean,
 ) {
     companion object Builder {
         fun of(
             currencyName: String,
             codeISO: Int,
             exponent: Int,
-            isCrypto: Boolean,
+            crypto: Boolean,
         ) =checkCurrency(
             currencyName,
             codeISO,
@@ -26,7 +25,7 @@ class Currency private constructor(
                 currencyName,
                 codeISO,
                 exponent,
-                isCrypto
+                crypto
             )
         }
 
@@ -35,7 +34,7 @@ class Currency private constructor(
             currencyName: String,
             codeISO: Int,
             exponent: Int,
-            isCrypto: Boolean
+            crypto: Boolean
             ):Either<Sequence<CurrencyError>,Currency> =
             if (currencyErrors.count() == 0)
                 Either.right(
@@ -43,7 +42,7 @@ class Currency private constructor(
                         currencyName,
                         codeISO,
                         exponent,
-                        isCrypto
+                        crypto
                     )
                 )
             else
@@ -65,7 +64,7 @@ class Currency private constructor(
             checkField(
                 currencyName,
                 CurrencyError.CurrencyNameError
-            ) { currencyName.all{ it.isLetter() } and Strings.isNotEmpty(currencyName) }
+            ) { currencyName.all{ it.isLetter() } and currencyName.isNotEmpty() }
 
         private fun checkExponent(exponent: Int) =
             checkNumber(exponent, CurrencyError.ExponentError)

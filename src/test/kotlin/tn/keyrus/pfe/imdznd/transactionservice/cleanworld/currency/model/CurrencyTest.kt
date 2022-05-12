@@ -22,7 +22,7 @@ internal class CurrencyTest {
             { assert(result.currencyName == currencyName) },
             { assert(result.codeISO == codeISO) },
             { assert(result.exponent == exponent) },
-            { assert(result.isCrypto == isCrypto) },
+            { assert(result.crypto == isCrypto) },
         )
     }
 
