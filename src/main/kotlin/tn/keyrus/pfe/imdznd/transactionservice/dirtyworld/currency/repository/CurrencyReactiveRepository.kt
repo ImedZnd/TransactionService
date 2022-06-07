@@ -12,4 +12,6 @@ interface CurrencyReactiveRepository : ReactiveCrudRepository<CurrencyDAO, Strin
     fun findByCurrencyName(currencyName: String): Mono<CurrencyDAO>
 
     fun findByCodeISO(codeISO: Int): Mono<CurrencyDAO>
+
+    fun countAllByCurrencyNameNotLike(alpha:String):Mono<Int>
 }

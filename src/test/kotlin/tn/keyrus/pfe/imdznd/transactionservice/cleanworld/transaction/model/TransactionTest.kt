@@ -8,6 +8,7 @@ internal class TransactionTest {
 
     @Test
     fun `valid test Transaction non empty field`() {
+        val transactionId : Long  = 1
         val currency = "GBP"
         val amount = 3738.0
         val state = Transaction.TransactionState.COMPLETED
@@ -20,6 +21,7 @@ internal class TransactionTest {
         val source = Transaction.TransactionSource.GAIA
         val result =
             Transaction.of(
+                transactionId,
                 currency,
                 amount,
                 state,
@@ -29,7 +31,8 @@ internal class TransactionTest {
                 entryMethod,
                 userId,
                 type,
-                source
+                source,
+                false
             ).get()
         assertAll(
             { assert(result.currency == currency) },
@@ -47,6 +50,7 @@ internal class TransactionTest {
 
     @Test
     fun `error currency test Transaction empty currency`() {
+        val transactionId : Long  = 1
         val currency = ""
         val amount = 3738.0
         val state = Transaction.TransactionState.COMPLETED
@@ -59,6 +63,7 @@ internal class TransactionTest {
         val source = Transaction.TransactionSource.INTERNAL
         val result =
             Transaction.of(
+                transactionId,
                 currency,
                 amount,
                 state,
@@ -68,7 +73,8 @@ internal class TransactionTest {
                 entryMethod,
                 userId,
                 type,
-                source
+                source,
+                false
             ).left
         assertAll(
             { assert(result.count() == 1) },
@@ -77,6 +83,7 @@ internal class TransactionTest {
     }
     @Test
     fun `error amount test Transaction negative amount`() {
+        val transactionId : Long  = 1
         val currency = "GBP"
         val amount = -6200.0
         val state = Transaction.TransactionState.DECLINED
@@ -89,6 +96,7 @@ internal class TransactionTest {
         val source = Transaction.TransactionSource.OPHION
         val result =
             Transaction.of(
+                transactionId,
                 currency,
                 amount,
                 state,
@@ -98,7 +106,8 @@ internal class TransactionTest {
                 entryMethod,
                 userId,
                 type,
-                source
+                source,
+                false
             ).left
         assertAll(
             { assert(result.count() == 1) },
@@ -108,6 +117,7 @@ internal class TransactionTest {
 
     @Test
     fun `error createdDate test Transaction created date is in the future`() {
+        val transactionId : Long  = 1
         val currency = "GBP"
         val amount = 500.0
         val state = Transaction.TransactionState.FAILED
@@ -120,6 +130,7 @@ internal class TransactionTest {
         val source = Transaction.TransactionSource.NYX
         val result =
             Transaction.of(
+                transactionId,
                 currency,
                 amount,
                 state,
@@ -129,7 +140,8 @@ internal class TransactionTest {
                 entryMethod,
                 userId,
                 type,
-                source
+                source,
+                false
             ).left
         assertAll(
             { assert(result.count() == 1) },
@@ -139,6 +151,7 @@ internal class TransactionTest {
 
     @Test
     fun `error merchantCategory test Transaction empty merchantCategory`() {
+        val transactionId : Long  = 1
         val currency = "GBP"
         val amount = 500.0
         val state = Transaction.TransactionState.REVERTED
@@ -151,6 +164,7 @@ internal class TransactionTest {
         val source = Transaction.TransactionSource.CRONUS
         val result =
             Transaction.of(
+                transactionId,
                 currency,
                 amount,
                 state,
@@ -160,7 +174,8 @@ internal class TransactionTest {
                 entryMethod,
                 userId,
                 type,
-                source
+                source,
+                false
             ).left
         assertAll(
             { assert(result.count() == 1) },
@@ -170,6 +185,7 @@ internal class TransactionTest {
 
     @Test
     fun `error merchantCountry test Transaction empty merchantCountry`() {
+        val transactionId : Long  = 1
         val currency = "GBP"
         val amount = 500.0
         val state = Transaction.TransactionState.REVERTED
@@ -182,6 +198,7 @@ internal class TransactionTest {
         val source = Transaction.TransactionSource.HERA
         val result =
             Transaction.of(
+                transactionId,
                 currency,
                 amount,
                 state,
@@ -191,7 +208,8 @@ internal class TransactionTest {
                 entryMethod,
                 userId,
                 type,
-                source
+                source,
+                false
             ).left
         assertAll(
             { assert(result.count() == 1) },
@@ -201,6 +219,7 @@ internal class TransactionTest {
 
     @Test
     fun `error userId test Transaction negative userId`() {
+        val transactionId : Long  = 1
         val currency = "GBP"
         val amount = 500.0
         val state = Transaction.TransactionState.REVERTED
@@ -213,6 +232,7 @@ internal class TransactionTest {
         val source = Transaction.TransactionSource.APOLLO
         val result =
             Transaction.of(
+                transactionId,
                 currency,
                 amount,
                 state,
@@ -222,7 +242,8 @@ internal class TransactionTest {
                 entryMethod,
                 userId,
                 type,
-                source
+                source,
+                false
             ).left
         assertAll(
             { assert(result.count() == 1) },
@@ -232,6 +253,7 @@ internal class TransactionTest {
 
     @Test
     fun ` list of errors userId test Transaction invalid inputs`() {
+        val transactionId : Long  = 1
         val currency = ""
         val amount = -500.0
         val state = Transaction.TransactionState.REVERTED
@@ -244,6 +266,7 @@ internal class TransactionTest {
         val source = Transaction.TransactionSource.MINOS
         val result =
             Transaction.of(
+                transactionId,
                 currency,
                 amount,
                 state,
@@ -253,7 +276,8 @@ internal class TransactionTest {
                 entryMethod,
                 userId,
                 type,
-                source
+                source,
+                false
             ).left
         assertAll(
             { assert(result.count() == 6) },

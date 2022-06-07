@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 class Transaction private constructor(
+    val transactionId : Long ? = null,
     val currency: String,
     val amount: Double,
     val state: TransactionState,
@@ -15,10 +16,12 @@ class Transaction private constructor(
     val userId: Long,
     val type: TransactionType,
     val source: TransactionSource,
+    val flaged: Boolean
 ) {
 
     companion object Builder {
         fun of(
+            transactionId : Long ? = null,
             currency: String,
             amount: Double,
             state: TransactionState,
@@ -29,6 +32,7 @@ class Transaction private constructor(
             userId: Long,
             type: TransactionType,
             source: TransactionSource,
+            flaged: Boolean
         ) =checkTransaction(
             currency,
             amount,
@@ -39,6 +43,7 @@ class Transaction private constructor(
             ).let {
             checkTransactionErrors(
                 it,
+                transactionId,
                 currency,
                 amount,
                 state,
@@ -48,12 +53,14 @@ class Transaction private constructor(
                 entryMethod,
                 userId,
                 type,
-                source
+                source,
+                flaged
                 )
         }
 
         private fun checkTransactionErrors(
             transactionErrors :Sequence<TransactionError>,
+            transactionId : Long ? = null,
             currency: String,
             amount: Double,
             state: TransactionState,
@@ -64,10 +71,12 @@ class Transaction private constructor(
             userId: Long,
             type: TransactionType,
             source: TransactionSource,
+            flaged: Boolean,
             ):Either<Sequence<TransactionError>,Transaction> =
             if (transactionErrors.count() == 0)
                 Either.right(
                     Transaction(
+                        transactionId,
                         currency,
                         amount,
                         state,
@@ -78,6 +87,7 @@ class Transaction private constructor(
                         userId,
                         type,
                         source,
+                        flaged
                     )
                 )
             else
@@ -163,7 +173,10 @@ class Transaction private constructor(
     enum class TransactionState {
         COMPLETED,
         DECLINED,
+        RECORDED,
         REVERTED,
+        CANCELLED,
+        PENDING,
         FAILED
     }
 
@@ -205,6 +218,5 @@ class Transaction private constructor(
         object TransactionMerchantCategoryError : TransactionError
         object TransactionMerchantCountryError : TransactionError
         object TransactionUserIdError : TransactionError
-
     }
 }

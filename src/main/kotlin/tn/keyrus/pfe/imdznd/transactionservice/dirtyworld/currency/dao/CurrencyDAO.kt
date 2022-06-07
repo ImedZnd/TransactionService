@@ -8,6 +8,7 @@ import tn.keyrus.pfe.imdznd.transactionservice.cleanworld.currency.model.Currenc
 
 @Table("currency")
 data class CurrencyDAO(
+
     @Id
     val currencyName: String = "A",
     val codeISO: Int = 1,

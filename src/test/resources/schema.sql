@@ -17,5 +17,7 @@ CREATE TABLE IF NOT EXISTS transaction
     USER_ID           SERIAL NOT NULL,
     TYPE              VARCHAR NOT NULL,
     SOURCE            VARCHAR NOT NULL,
-    ID                VARCHAR NOT NULL
+    flaged            BOOLEAN NOT NULL,
+    ID                SERIAL PRIMARY KEY,
+    FOREIGN KEY (CURRENCY) REFERENCES currency(currency_name)
 );

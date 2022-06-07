@@ -31,12 +31,17 @@ class CurrencyDatabaseRepository(
     override fun findAllCurrencyByIsCrypto(isCrypto: Boolean) =
         findAllCurrencyByCriteria { it.findAllByCrypto(isCrypto) }
 
+    override suspend fun countCurrencies()=
+        currencyReactiveRepository.countAllByCurrencyNameNotLike("ffff")
+            .let { mapToIntFromMono(it) }
+
+    private suspend fun mapToIntFromMono(mono: Mono<Int>) =
+        mono.awaitSingleOrNull()?:0
+
 
     override suspend fun saveCurrency(currency: Currency): Either<CurrencyRepository.CurrencyRepositoryError, Currency> =
         try {
-            println(currency)
             currencyReactiveRepository.save(currency.toDAO())
-                .also { print(it) }
                 .let { returnEitherOnMono(it) }
         } catch (exception: Exception) {
             Either.left(CurrencyRepository.CurrencyRepositoryError.CurrencyRepositoryIOError)

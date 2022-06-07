@@ -1,5 +1,6 @@
 package tn.keyrus.pfe.imdznd.transactionservice.dirtyworld.transaction.dao
 
+import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import tn.keyrus.pfe.imdznd.transactionservice.cleanworld.transaction.model.Transaction
@@ -9,20 +10,22 @@ import java.time.LocalDateTime
 data class TransactionDAO(
     @Id
     val id: Long? = null,
-    val currency: String,
-    val amount: Double,
-    val state: Transaction.TransactionState,
-    val createdDate: LocalDateTime,
-    val merchantCategory: String,
-    val merchantCountry: String,
-    val entryMethod: Transaction.TransactionEntryMethod,
-    val userId: Long,
-    val type: Transaction.TransactionType,
-    val source: Transaction.TransactionSource,
-    ) {
+    val currency: String = "",
+    val amount: Double = 0.0,
+    val state: Transaction.TransactionState = Transaction.TransactionState.COMPLETED,
+    val createdDate: LocalDateTime = LocalDateTime.now(),
+    val merchantCategory: String = "",
+    val merchantCountry: String = "",
+    val entryMethod: Transaction.TransactionEntryMethod = Transaction.TransactionEntryMethod.MISC,
+    val userId: Long = 0,
+    val type: Transaction.TransactionType = Transaction.TransactionType.P2P,
+    val source: Transaction.TransactionSource = Transaction.TransactionSource.NYX,
+    val flaged: Boolean = false
+) {
 
     fun toTransaction() =
         Transaction.of(
+            id,
             currency,
             amount,
             state,
@@ -32,24 +35,27 @@ data class TransactionDAO(
             entryMethod,
             userId,
             type,
-            source
+            source,
+            flaged
         )
 
-    companion object{
-        fun Transaction.toDAO(){
+    companion object {
+        fun Transaction.toDAO() =
             TransactionDAO(
+                id = transactionId,
                 currency = currency,
                 amount = amount,
                 state = state,
-                createdDate =createdDate,
+                createdDate = createdDate,
                 merchantCategory = merchantCategory,
                 merchantCountry = merchantCountry,
                 entryMethod = entryMethod,
                 userId = userId,
                 type = type,
-                source = source
+                source = source,
+                flaged = flaged
             )
-        }
+
     }
 
 }

@@ -6,13 +6,14 @@ import tn.keyrus.pfe.imdznd.transactionservice.cleanworld.currency.model.Currenc
 
 interface CurrencyRepository {
     fun findAllCurrency(): Flow<Currency>
-    suspend fun findCurrencyByCurrencyName(currencyName: String): Either<CurrencyRepositoryError,Currency>
-    suspend fun findCurrencyByCodeISO(codeISO: Int): Either<CurrencyRepositoryError,Currency>
+    suspend fun findCurrencyByCurrencyName(currencyName: String): Either<CurrencyRepositoryError, Currency>
+    suspend fun findCurrencyByCodeISO(codeISO: Int): Either<CurrencyRepositoryError, Currency>
     fun findAllCurrencyByIsCrypto(isCrypto: Boolean): Flow<Currency>
-    suspend fun saveCurrency(currency: Currency): Either<CurrencyRepositoryError,Currency>
+    suspend fun countCurrencies(): Int
+    suspend fun saveCurrency(currency: Currency): Either<CurrencyRepositoryError, Currency>
 
-    sealed interface CurrencyRepositoryError{
-        object CurrencyRepositoryIOError: CurrencyRepositoryError
-        object CurrencyNotFoundRepositoryError: CurrencyRepositoryError
+    sealed interface CurrencyRepositoryError {
+        object CurrencyRepositoryIOError : CurrencyRepositoryError
+        object CurrencyNotFoundRepositoryError : CurrencyRepositoryError
     }
 }
